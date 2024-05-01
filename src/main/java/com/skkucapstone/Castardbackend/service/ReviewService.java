@@ -16,6 +16,7 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final CafeService cafeService;
 
     public List<Review> getAllReviews() {
         return reviewRepository.findAll();
@@ -40,6 +41,10 @@ public class ReviewService {
     @Transactional
     public Review saveReview(Review review) {
         review.setTimestamp(LocalDateTime.now());
+
+        // 카페 엔티티의 평점 값과 개수를 업데이트
+        cafeService.updateCafeRating(review.getCafe(), review);
+
         return reviewRepository.save(review);
     }
 

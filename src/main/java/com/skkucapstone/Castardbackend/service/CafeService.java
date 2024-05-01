@@ -1,6 +1,7 @@
 package com.skkucapstone.Castardbackend.service;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
+import com.skkucapstone.Castardbackend.domain.Review;
 import com.skkucapstone.Castardbackend.repository.CafeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,12 @@ public class CafeService {
     @Transactional
     public Cafe saveCafe(Cafe cafe) {
         return cafeRepository.save(cafe);
+    }
+
+    @Transactional
+    public Cafe updateCafeRating(Cafe cafe, Review review) {
+        Cafe updateRatingCafe = cafe.addCafeRatings(review);
+        return cafeRepository.save(updateRatingCafe);
     }
 
     @Transactional

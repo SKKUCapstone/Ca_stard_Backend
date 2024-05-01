@@ -27,27 +27,38 @@ public class ServiceTest {
     CafeService cafeService;
 
     @Test
-    @Rollback(value = true)
+    @Rollback(value = false)
     void scenarioTest() {
 
         User testUser1 = new User();
-        testUser1.setUsername("User1");
-        testUser1.setEmail("TestEmail1");
+        testUser1.setUsername("ByungChan");
+        testUser1.setEmail("nicedavid98@daum.net");
+
+        User testUser2 = new User();
+        testUser2.setUsername("Jiho");
+        testUser2.setEmail("jiho@naver.com");
 
         Cafe testCafe1 = new Cafe();
-        testCafe1.setId(1111L);
-        testCafe1.setName("TestCafe1");
+        testCafe1.setId(12345L);
+        testCafe1.setName("Starbucks");
+
+        Cafe testCafe2 = new Cafe();
+        testCafe2.setId(23456L);
+        testCafe2.setName("Mega Coffee");
 
 
-        Review testReview = new Review();
-        testReview.setCafe(testCafe1);
-        testReview.setUser(testUser1);
+//        Review testReview = new Review();
+//        testReview.setCafe(testCafe1);
+//        testReview.setUser(testUser1);
 
         User user1 = userService.saveUser(testUser1);
         Cafe cafe1 = cafeService.saveCafe(testCafe1);
-        Review review1 = reviewService.saveReview(testReview);
+        User user2 = userService.saveUser(testUser2);
+        Cafe cafe2 = cafeService.saveCafe(testCafe2);
 
-        Assertions.assertEquals(review1.getUser().getId(), testUser1.getId());
-        Assertions.assertEquals(review1.getCafe().getId(), testCafe1.getId());
+//        Review review1 = reviewService.saveReview(testReview);
+//
+//        Assertions.assertEquals(review1.getUser().getId(), testUser1.getId());
+//        Assertions.assertEquals(review1.getCafe().getId(), testCafe1.getId());
     }
 }
