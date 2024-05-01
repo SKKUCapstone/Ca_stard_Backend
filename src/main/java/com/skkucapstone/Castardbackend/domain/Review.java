@@ -26,6 +26,8 @@ public class Review {
 
     private LocalDateTime timestamp;
 
+    private String comment;
+
     // 리뷰 항목들
     private int power_socket;
     private int capacity;
