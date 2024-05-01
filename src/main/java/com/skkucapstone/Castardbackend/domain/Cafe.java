@@ -25,6 +25,16 @@ public class Cafe {
 
     private Long latitude; // y좌표
 
+    // 카공에 대한 리뷰들의 평균을 유지하는 필드들.
+    private int power_socket;
+    private int capacity;
+    private int quiet;
+    private int wifi;
+    private int tables;
+    private int toilet;
+    private int bright;
+    private int clean;
+
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 }

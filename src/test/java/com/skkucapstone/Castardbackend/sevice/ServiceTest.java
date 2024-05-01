@@ -27,7 +27,7 @@ public class ServiceTest {
     CafeService cafeService;
 
     @Test
-    @Rollback(value = false)
+    @Rollback(value = true)
     void scenarioTest() {
 
         User testUser1 = new User();
