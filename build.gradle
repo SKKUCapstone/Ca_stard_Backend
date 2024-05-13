@@ -11,6 +11,11 @@ java {
 	sourceCompatibility = '21'
 }
 
+// 빌드 시 plain.jar 생성을 방지.
+jar {
+      enabled = false
+  }
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
