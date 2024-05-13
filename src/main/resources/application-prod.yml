@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    database: mysql
+    hibernate.ddl-auto: update
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://castard-db.cfc64esauig2.ap-northeast-2.rds.amazonaws.com:3306/castard?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: admin
+    password: castard1398!
