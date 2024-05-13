@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -28,6 +29,17 @@ public class KakaoController {
         String longitude = request.getParameter("longitude");
         String page = request.getParameter("page");
         return kakaoService.getSearchCafeList(latitude, longitude, page, "15");
+    }
+
+    /**
+     * 질의어 기반 카페 이미지 요청
+     * @param request 요청 데이터
+     * @return ResponseEntity
+     */
+    @PostMapping("/cafe/image")
+    private ResponseEntity<String> searchCafeImage(HttpServletRequest request) {
+        String query = request.getParameter("query");
+        return kakaoService.getCafeImage(query);
     }
 
     @PutMapping("/cafe/list")

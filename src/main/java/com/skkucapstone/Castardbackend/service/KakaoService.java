@@ -69,4 +69,27 @@ public class KakaoService {
         return restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
     }
 
+
+    /**
+     * 질의어를 통해 카페 이미지 검색
+     * @param query 검색을 원하는 질의어
+     * @return ResponseEntity
+     */
+    public ResponseEntity<String> getCafeImage(String query) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "KakaoAK f1c681d34107bd5d150c0bc5bd616975");
+
+        HttpEntity<String> entity = new HttpEntity<>("", headers);
+
+        String baseUrl = "https://dapi.kakao.com/v2/search/image?" +
+                "query=" + query;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        return restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
+    }
+
+
 }

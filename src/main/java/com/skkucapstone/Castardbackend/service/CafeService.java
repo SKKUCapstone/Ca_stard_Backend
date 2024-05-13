@@ -30,6 +30,7 @@ public class CafeService {
         return cafeRepository.save(cafe);
     }
 
+    /** 카페 리뷰가 추가될 때마다 호출해야 하는 함수. 카페 엔티티 내에 평점과 그 개수를 업데이트 해준다. **/
     @Transactional
     public Cafe updateCafeRating(Cafe cafe, Review review) {
         Cafe updateRatingCafe = cafe.addCafeRatings(review);
