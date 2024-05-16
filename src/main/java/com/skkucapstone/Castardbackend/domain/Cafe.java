@@ -50,39 +50,40 @@ public class Cafe {
 
     public Cafe addCafeRatings(Review review) {
         if (review.getPower_socket() != 0) {
+            power_socket = (power_socket * power_socket_cnt + review.getPower_socket()) / (power_socket_cnt + 1);
             power_socket_cnt += 1;
-            power_socket = (power_socket + review.getPower_socket()) / power_socket_cnt;
         }
         if (review.getCapacity() != 0) {
+            capacity = (capacity * capacity_cnt + review.getCapacity()) / (capacity_cnt + 1);
             capacity_cnt += 1;
-            capacity = (capacity + review.getPower_socket()) / capacity_cnt;
         }
         if (review.getQuiet() != 0) {
+            quiet = (quiet * quiet_cnt + review.getQuiet()) / (quiet_cnt + 1);
             quiet_cnt += 1;
-            quiet = (quiet + review.getPower_socket()) / quiet_cnt;
         }
         if (review.getWifi() != 0) {
+            wifi = (wifi * wifi_cnt + review.getWifi()) / (wifi_cnt + 1);
             wifi_cnt += 1;
-            wifi = (wifi + review.getPower_socket()) / wifi_cnt;
         }
         if (review.getTables() != 0) {
+            tables = (tables * tables_cnt + review.getTables()) / (tables_cnt + 1);
             tables_cnt += 1;
-            tables = (tables + review.getPower_socket()) / tables_cnt;
         }
         if (review.getToilet() != 0) {
+            toilet = (toilet * toilet_cnt + review.getToilet()) / (toilet_cnt + 1);
             toilet_cnt += 1;
-            toilet = (toilet + review.getPower_socket()) / toilet_cnt;
         }
         if (review.getBright() != 0) {
+            bright = (bright * bright_cnt + review.getBright()) / (bright_cnt + 1);
             bright_cnt += 1;
-            bright = (bright + review.getPower_socket()) / bright_cnt;
         }
         if (review.getClean() != 0) {
+            clean = (clean * clean_cnt + review.getClean()) / (clean_cnt + 1);
             clean_cnt += 1;
-            clean = (clean + review.getPower_socket()) / clean_cnt;
         }
 
         return this;
     }
+
 
 }
