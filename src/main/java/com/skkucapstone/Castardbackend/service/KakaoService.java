@@ -14,11 +14,12 @@ public class KakaoService {
      * 파라미터 순서는 x, y 순서로 넘겨줘야 데이터 리턴 받을 수 있음
      * @param longitude 경도 -> x
      * @param latitude 위도 -> y
+     * @param radius 반경
      * @param page 페이지 수 1,2,3
      * @param size 페이지당 조회 수 15
      * @return ResponseEntity
      */
-    public ResponseEntity<String> getSearchCafeList(String longitude, String latitude, String page, String size) {
+    public ResponseEntity<String> getSearchCafeList(String longitude, String latitude, String radius, String page, String size) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -30,7 +31,8 @@ public class KakaoService {
                 "category_group_code=CE7" +
                 "&page=" + page +
                 "&size="+ size +
-                "&sort=accuracy" +
+                "&sort=distance" +
+                "&radius=" + radius +
                 "&x=" + latitude +
                 "&y=" + longitude;
 
@@ -42,13 +44,15 @@ public class KakaoService {
     /**
      * 좌표 기준 카페 데이터 조회
      * 파라미터 순서는 x, y 순서로 넘겨줘야 데이터 리턴 받을 수 있음
+     * @param query 검색어
      * @param longitude 경도 -> x
      * @param latitude 위도 -> y
+     * @param radius 반경
      * @param page 페이지 수 1,2,3
      * @param size 페이지당 조회 수 15
      * @return ResponseEntity
      */
-    public ResponseEntity<String> getSearchCafeOne(String longitude, String latitude, String page, String size) {
+    public ResponseEntity<String> getSearchCafeQuery(String query, String longitude, String latitude, String radius, String page, String size) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -56,11 +60,13 @@ public class KakaoService {
 
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
-        String baseUrl = "https://dapi.kakao.com/v2/local/search/category.json?" +
+        String baseUrl = "https://dapi.kakao.com/v2/local/search/keyword.json?" +
                 "category_group_code=CE7" +
+                "&query=" + query +
+                "&radius=" + radius +
                 "&page=" + page +
                 "&size="+ size +
-                "&sort=accuracy" +
+                "&sort=distance" +
                 "&x=" + latitude +
                 "&y=" + longitude;
 
