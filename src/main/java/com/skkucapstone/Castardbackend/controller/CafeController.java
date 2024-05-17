@@ -1,6 +1,7 @@
 package com.skkucapstone.Castardbackend.controller;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
+import com.skkucapstone.Castardbackend.dto.CafeDto;
 import com.skkucapstone.Castardbackend.service.CafeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,5 +49,12 @@ public class CafeController {
         cafeService.deleteCafe(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/list")
+    public List<Cafe> searchCafes(@RequestBody CafeDto.CafeSearchRequest request) {
+        List<Cafe> cafes = cafeService.searchCafes(request);
+        return cafes;
+    }
+
 }
 

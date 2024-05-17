@@ -21,9 +21,9 @@ public class Cafe {
 
     private String phone;
 
-    private Long longitude; // x좌표
+    private Double longitude; // x좌표
 
-    private Long latitude; // y좌표
+    private Double latitude; // y좌표
 
     // 카공에 대한 리뷰들의 평균을 유지하는 필드들.
     private Double power_socket = 0D;

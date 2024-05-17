@@ -1,8 +1,8 @@
-spring:
-  profiles:
-    active: prod
-
-# 로컬 개발에 사용
 #spring:
 #  profiles:
-#    active: local
+#    active: prod
+
+# 로컬 개발에 사용
+spring:
+  profiles:
+    active: local

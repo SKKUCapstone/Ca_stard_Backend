@@ -2,7 +2,9 @@ package com.skkucapstone.Castardbackend.service;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
 import com.skkucapstone.Castardbackend.domain.Review;
+import com.skkucapstone.Castardbackend.dto.CafeDto;
 import com.skkucapstone.Castardbackend.repository.CafeRepository;
+import com.skkucapstone.Castardbackend.repository.CafeRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class CafeService {
 
     private final CafeRepository cafeRepository;
+    private final CafeRepositoryImpl cafeRepositoryImpl;
 
     public List<Cafe> getAllCafes() {
         return cafeRepository.findAll();
@@ -40,5 +43,21 @@ public class CafeService {
     @Transactional
     public void deleteCafe(Long id) {
         cafeRepository.deleteById(id);
+    }
+
+
+    /** 전채 카페 리스트를 가져와, 위치 + 텍스트 + 평점별 필터링을 제공하는 함수 **/
+    public List<Cafe> searchCafes(CafeDto.CafeSearchRequest request) {
+        List<Cafe> cafes = cafeRepositoryImpl.findByLocationWithinRadius(request.getX(), request.getY(), request.getRadius());
+
+        if (request.getSearchText() != null && !request.getSearchText().isEmpty()) {
+            cafes = cafeRepositoryImpl.findBySearchText(request.getSearchText(), cafes);
+        }
+
+        if (request.isPowerSocket() || request.isCapacity() || request.isQuiet() || request.isWifi() || request.isTables() || request.isToilet() || request.isBright() || request.isClean()) {
+            cafes = cafeRepositoryImpl.filterByRating(cafes, request.isPowerSocket(), request.isCapacity(), request.isQuiet(), request.isWifi(), request.isTables(), request.isToilet(), request.isBright(), request.isClean());
+        }
+
+        return cafes;
     }
 }
