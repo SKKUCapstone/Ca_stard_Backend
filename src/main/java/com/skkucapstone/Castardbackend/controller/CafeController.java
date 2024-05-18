@@ -1,10 +1,8 @@
 package com.skkucapstone.Castardbackend.controller;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
-import com.skkucapstone.Castardbackend.dto.CafeDto;
 import com.skkucapstone.Castardbackend.service.CafeService;
 import com.skkucapstone.Castardbackend.service.KakaoService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,36 +51,39 @@ public class CafeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/list")
-    public ResponseEntity<?> searchCafes(@RequestBody CafeDto.CafeSearchRequest request) {
+    /** 카페 검색 API **/
+    @GetMapping("/list")
+    public ResponseEntity<?> searchCafes(@RequestParam(name = "x") double x,
+                                         @RequestParam(name = "y") double y,
+                                         @RequestParam(name = "radius") int radius,
+                                         @RequestParam(name = "searchText", required = false) String searchText,
+                                         @RequestParam(name = "powerSocket", required = false, defaultValue = "false") boolean powerSocket,
+                                         @RequestParam(name = "capacity", required = false, defaultValue = "false") boolean capacity,
+                                         @RequestParam(name = "quiet", required = false, defaultValue = "false") boolean quiet,
+                                         @RequestParam(name = "wifi", required = false, defaultValue = "false") boolean wifi,
+                                         @RequestParam(name = "tables", required = false, defaultValue = "false") boolean tables,
+                                         @RequestParam(name = "toilet", required = false, defaultValue = "false") boolean toilet,
+                                         @RequestParam(name = "bright", required = false, defaultValue = "false") boolean bright,
+                                         @RequestParam(name = "clean", required = false, defaultValue = "false") boolean clean) {
+
         // 하나라도 true 인 경우 CafeService 를 통해 검색 : DB 속 카페만을 대상으로 검색
-        if (request.isPowerSocket() || request.isCapacity() || request.isQuiet() || request.isWifi() ||
-                request.isTables() || request.isToilet() || request.isBright() || request.isClean()) {
-            List<Cafe> cafes = cafeService.searchCafes(request);
+        if (powerSocket || capacity || quiet || wifi || tables || toilet || bright || clean) {
+            List<Cafe> cafes = cafeService.searchCafes(x, y, radius, searchText, powerSocket, capacity, quiet, wifi, tables, toilet, bright, clean);
             return ResponseEntity.ok(cafes);
         }
         // 모두 false인 경우 KakaoService를 통해 검색 : 카카오 API 에서 제공하는 리스트 그대로 제공.
         else {
-            // 검색어 기반 X
-            if (request.getSearchText() == null) {
-                String latitude = String.valueOf(request.getY());
-                String longitude = String.valueOf(request.getX());
-                String radius = String.valueOf(request.getRadius());
-                String page = String.valueOf(5);
-                return kakaoService.getSearchCafeList(latitude, longitude, radius, page, "15");
-            }
-            // 검색어 기반 O
-            else {
-                String query = request.getSearchText();
-                String latitude = String.valueOf(request.getY());
-                String longitude = String.valueOf(request.getX());
-                String radius = String.valueOf(request.getRadius());
-                String page = String.valueOf(5);
-                return kakaoService.getSearchCafeQuery(query, latitude, longitude, radius, page, "15");
+            String latitude = String.valueOf(y);
+            String longitude = String.valueOf(x);
+            String radiusStr = String.valueOf(radius);
+            String page = "5"; // 기본 페이지 번호
+
+            if (searchText == null || searchText.isEmpty()) {
+                return kakaoService.getSearchCafeList(latitude, longitude, radiusStr, page, "15");
+            } else {
+                return kakaoService.getSearchCafeQuery(searchText, latitude, longitude, radiusStr, page, "15");
             }
         }
     }
-
-
 }
 

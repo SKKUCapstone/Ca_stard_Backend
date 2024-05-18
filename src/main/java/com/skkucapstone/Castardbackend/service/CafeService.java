@@ -2,7 +2,6 @@ package com.skkucapstone.Castardbackend.service;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
 import com.skkucapstone.Castardbackend.domain.Review;
-import com.skkucapstone.Castardbackend.dto.CafeDto;
 import com.skkucapstone.Castardbackend.repository.CafeRepository;
 import com.skkucapstone.Castardbackend.repository.CafeRepositoryImpl;
 import lombok.RequiredArgsConstructor;
@@ -47,15 +46,18 @@ public class CafeService {
 
 
     /** 전채 카페 리스트를 가져와, 위치 + 텍스트 + 평점별 필터링을 제공하는 함수 **/
-    public List<Cafe> searchCafes(CafeDto.CafeSearchRequest request) {
-        List<Cafe> cafes = cafeRepositoryImpl.findByLocationWithinRadius(request.getX(), request.getY(), request.getRadius());
+    public List<Cafe> searchCafes(double x, double y, int radius, String searchText,
+                                  boolean powerSocket, boolean capacity, boolean quiet,
+                                  boolean wifi, boolean tables, boolean toilet,
+                                  boolean bright, boolean clean) {
+        List<Cafe> cafes = cafeRepositoryImpl.findByLocationWithinRadius(x, y, radius);
 
-        if (request.getSearchText() != null && !request.getSearchText().isEmpty()) {
-            cafes = cafeRepositoryImpl.findBySearchText(request.getSearchText(), cafes);
+        if (searchText != null && !searchText.isEmpty()) {
+            cafes = cafeRepositoryImpl.findBySearchText(searchText, cafes);
         }
 
-        if (request.isPowerSocket() || request.isCapacity() || request.isQuiet() || request.isWifi() || request.isTables() || request.isToilet() || request.isBright() || request.isClean()) {
-            cafes = cafeRepositoryImpl.filterByRating(cafes, request.isPowerSocket(), request.isCapacity(), request.isQuiet(), request.isWifi(), request.isTables(), request.isToilet(), request.isBright(), request.isClean());
+        if (powerSocket || capacity || quiet || wifi || tables || toilet || bright || clean) {
+            cafes = cafeRepositoryImpl.filterByRating(cafes, powerSocket, capacity, quiet, wifi, tables, toilet, bright, clean);
         }
 
         return cafes;
