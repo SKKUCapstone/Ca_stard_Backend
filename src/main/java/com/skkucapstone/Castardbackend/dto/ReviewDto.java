@@ -65,7 +65,7 @@ public class ReviewDto {
     }
 
 
-    /** 리뷰 작성 시 reviewRequestDTO 를 엔티티로 변환하는 함수 **/
+    /** 리뷰 작성 시 ReviewCreateRequestDTO 를 엔티티로 변환하는 함수 **/
     public static Review mapToEntity(ReviewCreateRequestDTO reviewRequestDTO, User user, Cafe cafe) {
 
         Review review = new Review();
@@ -105,7 +105,7 @@ public class ReviewDto {
         return review;
     }
 
-    /** 리뷰 조회 시 엔티티를 ReviewShowResponseDTO 로 변환해주는 함수 **/
+    /** 리뷰 조회 시 review 엔티티를 ReviewShowResponseDTO 로 변환해주는 함수 **/
     public static ReviewShowResponseDTO mapToReviewShowResponseDTO(Review review) {
         return new ReviewShowResponseDTO(
                 review.getId(),

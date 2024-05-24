@@ -24,6 +24,16 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    /** email 로 회원 찾기  **/
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+//    /** username 과 email 로 회원 찾기  **/
+//    public Optional<User> findUserByUserNameAndEmail(String userName, String email) {
+//        return userRepository.findByUserNameAndEmail(userName, email);
+//    }
+
     @Transactional
     public User saveUser(User user) {
         return userRepository.save(user);
