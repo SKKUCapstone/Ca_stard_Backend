@@ -119,22 +119,24 @@ public class CafeController {
         boolean bright = filter != null && filter.contains("bright");
         boolean clean = filter != null && filter.contains("clean");
 
-        // 하나라도 true 인 경우 CafeService 를 통해 검색 : DB 속 카페만을 대상으로 검색
-        if (filter == null || filter.isEmpty() || powerSocket || capacity || quiet || wifi || tables || toilet || bright || clean) {
+
+        // 필터를 주지 않거나, 빈 리스트로 주었을 경우 KakaoService를 통해 검색 : 카카오 API 에서 제공하는 리스트 그대로 제공.
+        if (filter == null || filter.isEmpty()) {
+            String latitude = String.valueOf(y);
+            String longitude = String.valueOf(x);
+            String radiusStr = String.valueOf(radius);
+            String page = "5"; // 기본 페이지 번호
+
+            if (searchText == null || searchText.isEmpty()) {
+                return kakaoService.getSearchCafeList(latitude, longitude, radiusStr, page, "15");
+            } else {
+                return kakaoService.getSearchCafeQuery(searchText, latitude, longitude, radiusStr, page, "15");
+            }
+        }
+        // 필터를 준 경우 CafeService 를 통해 검색 : DB 속 카페만을 대상으로 검색
+        else {
             List<Cafe> cafes = cafeService.searchCafes(x, y, radius, searchText, powerSocket, capacity, quiet, wifi, tables, toilet, bright, clean);
             return ResponseEntity.ok(cafes);
-        }
-
-        // 모두 false인 경우 KakaoService를 통해 검색 : 카카오 API 에서 제공하는 리스트 그대로 제공.
-        String latitude = String.valueOf(y);
-        String longitude = String.valueOf(x);
-        String radiusStr = String.valueOf(radius);
-        String page = "5"; // 기본 페이지 번호
-
-        if (searchText == null || searchText.isEmpty()) {
-            return kakaoService.getSearchCafeList(latitude, longitude, radiusStr, page, "15");
-        } else {
-            return kakaoService.getSearchCafeQuery(searchText, latitude, longitude, radiusStr, page, "15");
         }
     }
 
