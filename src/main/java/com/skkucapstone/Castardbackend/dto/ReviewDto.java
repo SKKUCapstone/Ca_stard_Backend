@@ -22,6 +22,14 @@ public class ReviewDto {
         private Long userId;
         @NotNull
         private Long cafeId;
+
+        // DB에 저장되어 있지 않은 카페는 리뷰 작성 시 DB에 넣어주기 위한 정보들.
+        private String cafeName;
+        private String address;
+        private String phone;
+        private Double longitude;
+        private Double latitude;
+
         private Integer powerSocket;
         private Integer capacity;
         private Integer quiet;
@@ -122,6 +130,25 @@ public class ReviewDto {
                 review.getBright(),
                 review.getClean()
         );
+    }
+
+    public static Cafe createNewCafeFromDTO(ReviewDto.ReviewCreateRequestDTO reviewCreateRequestDTO) {
+        Long id = reviewCreateRequestDTO.getCafeId();
+        String cafeName = reviewCreateRequestDTO.getCafeName();
+        String address = reviewCreateRequestDTO.getAddress();
+        String phone = reviewCreateRequestDTO.getPhone();
+        Double longitude = reviewCreateRequestDTO.getLongitude();
+        Double latitude = reviewCreateRequestDTO.getLatitude();
+
+        Cafe newCafe = new Cafe();
+        newCafe.setId(id);
+        newCafe.setCafeName(cafeName);
+        newCafe.setAddress(address);
+        newCafe.setPhone(phone);
+        newCafe.setLongitude(longitude);
+        newCafe.setLatitude(latitude);
+
+        return newCafe;
     }
 }
 

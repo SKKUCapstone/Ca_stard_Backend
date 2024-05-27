@@ -51,56 +51,6 @@ public class CafeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    /** 카페 검색 API **/
-//    @GetMapping("/list")
-//    public ResponseEntity<?> searchCafes(@RequestParam(name = "x") double x,
-//                                         @RequestParam(name = "y") double y,
-//                                         @RequestParam(name = "radius") int radius,
-//                                         @RequestParam(name = "searchText", required = false) String searchText,
-////                                         @RequestParam(name = "powerSocket", required = false, defaultValue = "false") boolean powerSocket,
-////                                         @RequestParam(name = "capacity", required = false, defaultValue = "false") boolean capacity,
-////                                         @RequestParam(name = "quiet", required = false, defaultValue = "false") boolean quiet,
-////                                         @RequestParam(name = "wifi", required = false, defaultValue = "false") boolean wifi,
-////                                         @RequestParam(name = "tables", required = false, defaultValue = "false") boolean tables,
-////                                         @RequestParam(name = "toilet", required = false, defaultValue = "false") boolean toilet,
-////                                         @RequestParam(name = "bright", required = false, defaultValue = "false") boolean bright,
-////                                         @RequestParam(name = "clean", required = false, defaultValue = "false") boolean clean)
-//                                         @RequestParam(name = "filter") List<String> filter) {
-//
-//        // filter 리스트의 요소를 가져옴
-//        boolean powerSocket = filter.contains("powerSocket");
-//        boolean capacity = filter.contains("powerSocket");
-//        boolean quiet = filter.contains("powerSocket");
-//        boolean wifi = filter.contains("powerSocket");
-//        boolean tables = filter.contains("powerSocket");
-//        boolean toilet = filter.contains("powerSocket");
-//        boolean bright = filter.contains("powerSocket");
-//        boolean clean = filter.contains("powerSocket");
-//
-//        // 하나라도 true 인 경우 CafeService 를 통해 검색 : DB 속 카페만을 대상으로 검색
-//        if (filter.isEmpty()) {
-//            List<Cafe> cafes = cafeService.searchCafes(x, y, radius, searchText, powerSocket, capacity, quiet, wifi, tables, toilet, bright, clean);
-//            return ResponseEntity.ok(cafes);
-//        }
-////        if (powerSocket || capacity || quiet || wifi || tables || toilet || bright || clean) {
-////            List<Cafe> cafes = cafeService.searchCafes(x, y, radius, searchText, powerSocket, capacity, quiet, wifi, tables, toilet, bright, clean);
-////            return ResponseEntity.ok(cafes);
-////        }
-//
-//        // 모두 false인 경우 KakaoService를 통해 검색 : 카카오 API 에서 제공하는 리스트 그대로 제공.
-//        else {
-//            String latitude = String.valueOf(y);
-//            String longitude = String.valueOf(x);
-//            String radiusStr = String.valueOf(radius);
-//            String page = "5"; // 기본 페이지 번호
-//
-//            if (searchText == null || searchText.isEmpty()) {
-//                return kakaoService.getSearchCafeList(latitude, longitude, radiusStr, page, "15");
-//            } else {
-//                return kakaoService.getSearchCafeQuery(searchText, latitude, longitude, radiusStr, page, "15");
-//            }
-//        }
-//    }
 
     @GetMapping("/list")
     public ResponseEntity<?> searchCafes(@RequestParam(name = "x") double x,

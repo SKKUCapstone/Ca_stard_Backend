@@ -2,6 +2,7 @@ package com.skkucapstone.Castardbackend.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +10,14 @@ import java.util.List;
 @Entity
 @Getter @Setter
 @Table(name="cafe")
+@ToString
 public class Cafe {
 
     @Id
     @Column(name="cafe_id")
     private Long id;
 
-    private String name;
+    private String cafeName;
 
     private String address;
 
@@ -48,6 +50,7 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
+    /** 해당 카페에 리뷰가 달렸을 때, 알맞게 평점 변경을 처리해주는 함수**/
     public Cafe addCafeRatings(Review review) {
         if (review.getPower_socket() != 0) {
             power_socket = (power_socket * power_socket_cnt + review.getPower_socket()) / (power_socket_cnt + 1);

@@ -29,7 +29,7 @@ public class CafeRepositoryImpl implements CafeRepositoryCustom {
     @Override
     public List<Cafe> findBySearchText(String searchText, List<Cafe> cafes) {
         return cafes.stream()
-                .filter(cafe -> cafe.getName().contains(searchText) || cafe.getAddress().contains(searchText))
+                .filter(cafe -> cafe.getCafeName().contains(searchText) || cafe.getAddress().contains(searchText))
                 .collect(Collectors.toList());
     }
 
