@@ -1,12 +1,10 @@
 package com.skkucapstone.Castardbackend.sevice;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
-import com.skkucapstone.Castardbackend.domain.Review;
 import com.skkucapstone.Castardbackend.domain.User;
 import com.skkucapstone.Castardbackend.service.CafeService;
 import com.skkucapstone.Castardbackend.service.ReviewService;
 import com.skkucapstone.Castardbackend.service.UserService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,20 +29,20 @@ public class ServiceTest {
     void scenarioTest() {
 
         User testUser1 = new User();
-        testUser1.setUsername("ByungChan");
+        testUser1.setUserName("ByungChan");
         testUser1.setEmail("nicedavid98@daum.net");
 
         User testUser2 = new User();
-        testUser2.setUsername("Jiho");
+        testUser2.setUserName("Jiho");
         testUser2.setEmail("jiho@naver.com");
 
         Cafe testCafe1 = new Cafe();
         testCafe1.setId(12345L);
-        testCafe1.setName("Starbucks");
+        testCafe1.setCafeName("Starbucks");
 
         Cafe testCafe2 = new Cafe();
         testCafe2.setId(23456L);
-        testCafe2.setName("Mega Coffee");
+        testCafe2.setCafeName("Mega Coffee");
 
 
 //        Review testReview = new Review();
