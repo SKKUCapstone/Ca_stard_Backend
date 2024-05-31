@@ -34,7 +34,7 @@ public class FavoriteController {
     }
 
     /** 특정 유저의 즐겨찾기 목록 조회 **/
-    @GetMapping("/user/{userId}/favorites")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<Cafe>> getUserFavorites(@PathVariable Long userId) {
         List<Favorite> favorites = favoriteService.getUserFavorites(userId);
         List<Cafe> cafes = favorites.stream()
@@ -44,7 +44,7 @@ public class FavoriteController {
     }
 
     /** 특정 카페의 즐겨찾기 목록 조회 **/
-    @GetMapping("/cafe/{cafeId}/favorites")
+    @GetMapping("/cafe/{cafeId}")
     public ResponseEntity<List<User>> getCafeFavorites(@PathVariable Long cafeId) {
         List<Favorite> favorites = favoriteService.getCafeFavorites(cafeId);
         List<User> users = favorites.stream()
