@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -29,46 +30,6 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final UserService userService;
     private final CafeService cafeService;
-
-//    /** 리뷰 작성 **/
-//    @PostMapping("/post")
-//    public ResponseEntity<Long> saveReview(@RequestBody @Valid ReviewDto.ReviewCreateRequestDTO reviewCreateRequestDTO) {
-//
-//        Optional<User> userById = userService.getUserById(reviewCreateRequestDTO.getUserId());
-//        Optional<Cafe> cafeById = cafeService.getCafeById(reviewCreateRequestDTO.getCafeId());
-//
-//        // 사용자가 존재하지 않는 경우 404 에러 반환
-//        if (userById.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        // 카페가 DB에 존재하지 않을 경우, DB에 저장.
-//        if (cafeById.isEmpty()) {
-//            Long id = reviewCreateRequestDTO.getCafeId();
-//            String cafeName = reviewCreateRequestDTO.getCafeName();
-//            String address = reviewCreateRequestDTO.getAddress();
-//            String phone = reviewCreateRequestDTO.getPhone();
-//            Double longitude = reviewCreateRequestDTO.getLongitude();
-//            Double latitude = reviewCreateRequestDTO.getLatitude();
-//
-//            Cafe newCafe = addNewCafe(id, cafeName, address, phone, longitude, latitude);
-//            cafeService.saveCafe(newCafe);
-//            cafeById = cafeService.getCafeById(id);
-//
-//            if (cafeById.isEmpty()) {
-//                return ResponseEntity.notFound().build();
-//            }
-//        }
-//
-//        // DTO 를 Entity 로 바꾸어 주는 함수를 정의하여, 사용
-//        Review review = ReviewDto.mapToEntity(reviewCreateRequestDTO, userById.get(), cafeById.get());
-//
-//        // 리뷰 저장
-//        Review savedReview = reviewService.saveReview(review);
-//
-//        // 성공 200 메시지 반환
-//        return new ResponseEntity<>(savedReview.getId(), HttpStatus.OK);
-//    }
 
     /** 리뷰 작성 (해당 카페가 DB에 존재하지 않으면, DB에 저장까지 수행)**/
     @PostMapping("/post")
@@ -106,7 +67,20 @@ public class ReviewController {
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteReview(@RequestBody @Valid ReviewDto.ReviewDeleteRequestDTO reviewDeleteRequestDTO) {
 
-        // 리뷰 작성자와 현재 로그인한 사용자와 일치 확인 로직은 추후 구현 예정 (카카오 로그인 구현 완료 후 가능)
+        // 리뷰 작성자와 현재 로그인한 사용자와 일치 확인 로직
+        Optional<Review> reviewById = reviewService.getReviewById(reviewDeleteRequestDTO.getReviewId());
+        if (reviewById.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        else {
+            Long requestUserId = reviewDeleteRequestDTO.getUserId();
+            Long reviewUserId = reviewById.get().getUser().getId();
+
+            // 리뷰 삭제를 요청한 유저와, 리뷰 작성자가 다른 경우: 에러 리턴
+            if (!Objects.equals(requestUserId, reviewUserId)) {
+                return ResponseEntity.internalServerError().build();
+            }
+        }
 
         reviewService.deleteReview(reviewDeleteRequestDTO.getReviewId());
         return new ResponseEntity<>(HttpStatus.OK);
