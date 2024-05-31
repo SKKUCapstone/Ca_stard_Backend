@@ -1,6 +1,7 @@
 package com.skkucapstone.Castardbackend.controller;
 
 import com.skkucapstone.Castardbackend.domain.Favorite;
+import com.skkucapstone.Castardbackend.dto.FavoriteDto;
 import com.skkucapstone.Castardbackend.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +18,15 @@ public class FavoriteController {
 
     /** 즐겨찾기 추가 **/
     @PostMapping("/post")
-    public ResponseEntity<Long> addFavorite(@RequestParam Long userId, @RequestParam Long cafeId) {
-        Favorite favorite = favoriteService.addFavorite(userId, cafeId);
+    public ResponseEntity<Long> addFavorite(@RequestBody FavoriteDto.FavoriteRequestDTO favoriteRequestDTO) {
+        Favorite favorite = favoriteService.addFavorite(favoriteRequestDTO.getUserId(), favoriteRequestDTO.getCafeId());
         return ResponseEntity.ok(favorite.getId());
     }
 
     /** 즐겨찾기 삭제 **/
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> removeFavorite(@RequestParam Long userId, @RequestParam Long cafeId) {
-        favoriteService.removeFavorite(userId, cafeId);
+    public ResponseEntity<Void> removeFavorite(@RequestBody FavoriteDto.FavoriteRequestDTO favoriteRequestDTO) {
+        favoriteService.removeFavorite(favoriteRequestDTO.getUserId(), favoriteRequestDTO.getCafeId());
         return ResponseEntity.noContent().build();
     }
 
