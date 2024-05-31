@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,22 +37,26 @@ public class FavoriteController {
 
     /** 특정 유저의 즐겨찾기 목록 조회 **/
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Long>> getUserFavorites(@PathVariable Long userId) {
+    public ResponseEntity<Map<String, List<Long>>> getUserFavorites(@PathVariable Long userId) {
         List<Favorite> favorites = favoriteService.getUserFavorites(userId);
         List<Long> cafeIds = favorites.stream()
                 .map(favorite -> favorite.getCafe().getId())
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(cafeIds);
+        Map<String, List<Long>> response = new HashMap<>();
+        response.put("cafeIds", cafeIds);
+        return ResponseEntity.ok(response);
     }
 
     /** 특정 카페의 즐겨찾기 목록 조회 **/
     @GetMapping("/cafe/{cafeId}")
-    public ResponseEntity<List<Long>> getCafeFavorites(@PathVariable Long cafeId) {
+    public ResponseEntity<Map<String, List<Long>>> getCafeFavorites(@PathVariable Long cafeId) {
         List<Favorite> favorites = favoriteService.getCafeFavorites(cafeId);
         List<Long> userIds = favorites.stream()
                 .map(favorite -> favorite.getUser().getId())
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(userIds);
+        Map<String, List<Long>> response = new HashMap<>();
+        response.put("userIds", userIds);
+        return ResponseEntity.ok(response);
     }
 
 }
