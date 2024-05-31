@@ -50,6 +50,9 @@ public class Cafe {
     @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cafe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Favorite> favorites = new ArrayList<>();
+
     /** 해당 카페에 리뷰가 달렸을 때, 알맞게 평점 변경을 처리해주는 함수**/
     public Cafe addCafeRatings(Review review) {
         if (review.getPower_socket() != 0) {
