@@ -35,21 +35,22 @@ public class FavoriteController {
 
     /** 특정 유저의 즐겨찾기 목록 조회 **/
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Cafe>> getUserFavorites(@PathVariable Long userId) {
+    public ResponseEntity<List<Long>> getUserFavorites(@PathVariable Long userId) {
         List<Favorite> favorites = favoriteService.getUserFavorites(userId);
-        List<Cafe> cafes = favorites.stream()
-                .map(Favorite::getCafe)
+        List<Long> cafeIds = favorites.stream()
+                .map(favorite -> favorite.getCafe().getId())
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(cafes);
+        return ResponseEntity.ok(cafeIds);
     }
 
     /** 특정 카페의 즐겨찾기 목록 조회 **/
     @GetMapping("/cafe/{cafeId}")
-    public ResponseEntity<List<User>> getCafeFavorites(@PathVariable Long cafeId) {
+    public ResponseEntity<List<Long>> getCafeFavorites(@PathVariable Long cafeId) {
         List<Favorite> favorites = favoriteService.getCafeFavorites(cafeId);
-        List<User> users = favorites.stream()
-                .map(Favorite::getUser)
+        List<Long> userIds = favorites.stream()
+                .map(favorite -> favorite.getUser().getId())
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(userIds);
     }
+
 }
