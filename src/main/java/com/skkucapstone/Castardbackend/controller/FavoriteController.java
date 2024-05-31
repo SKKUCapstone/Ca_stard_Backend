@@ -1,6 +1,8 @@
 package com.skkucapstone.Castardbackend.controller;
 
+import com.skkucapstone.Castardbackend.domain.Cafe;
 import com.skkucapstone.Castardbackend.domain.Favorite;
+import com.skkucapstone.Castardbackend.domain.User;
 import com.skkucapstone.Castardbackend.dto.FavoriteDto;
 import com.skkucapstone.Castardbackend.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,16 +34,22 @@ public class FavoriteController {
     }
 
     /** 특정 유저의 즐겨찾기 목록 조회 **/
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Favorite>> getUserFavorites(@PathVariable Long userId) {
+    @GetMapping("/user/{userId}/favorites")
+    public ResponseEntity<List<Cafe>> getUserFavorites(@PathVariable Long userId) {
         List<Favorite> favorites = favoriteService.getUserFavorites(userId);
-        return ResponseEntity.ok(favorites);
+        List<Cafe> cafes = favorites.stream()
+                .map(Favorite::getCafe)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(cafes);
     }
 
     /** 특정 카페의 즐겨찾기 목록 조회 **/
-    @GetMapping("/cafe/{cafeId}")
-    public ResponseEntity<List<Favorite>> getCafeFavorites(@PathVariable Long cafeId) {
+    @GetMapping("/cafe/{cafeId}/favorites")
+    public ResponseEntity<List<User>> getCafeFavorites(@PathVariable Long cafeId) {
         List<Favorite> favorites = favoriteService.getCafeFavorites(cafeId);
-        return ResponseEntity.ok(favorites);
+        List<User> users = favorites.stream()
+                .map(Favorite::getUser)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
     }
 }
