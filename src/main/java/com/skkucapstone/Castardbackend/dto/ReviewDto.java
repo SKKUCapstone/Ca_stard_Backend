@@ -12,6 +12,27 @@ import java.time.LocalDateTime;
 
 public class ReviewDto {
 
+    /** Review Entity 와 동일한 구조를 가지는 DTO **/
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ReviewDTO {
+        private Long id;
+        private Long userId;
+        private Long cafeId;
+        private LocalDateTime timestamp;
+        private String comment;
+
+        private int power_socket;
+        private int capacity;
+        private int quiet;
+        private int wifi;
+        private int tables;
+        private int toilet;
+        private int bright;
+        private int clean;
+    }
+
     /** 리뷰 작성을 위한 요청을 처리하는 DTO **/
     @Data
     @AllArgsConstructor
@@ -49,26 +70,6 @@ public class ReviewDto {
         private Long reviewId;
         @NotNull
         private Long userId;
-    }
-
-    /** 리뷰 조회를 위한 응답을 처리하는 DTO **/
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ReviewShowResponseDTO {
-        private Long id;
-        private Long userId;
-        private Long cafeId;
-        private LocalDateTime timestamp;
-        private String comment;
-        private int power_socket;
-        private int capacity;
-        private int quiet;
-        private int wifi;
-        private int tables;
-        private int toilet;
-        private int bright;
-        private int clean;
     }
 
 
@@ -113,8 +114,8 @@ public class ReviewDto {
     }
 
     /** 리뷰 조회 시 review 엔티티를 ReviewShowResponseDTO 로 변환해주는 함수 **/
-    public static ReviewShowResponseDTO mapEntityToReviewShowResponseDTO(Review review) {
-        return new ReviewShowResponseDTO(
+    public static ReviewDTO mapEntityToReviewDTO(Review review) {
+        return new ReviewDTO(
                 review.getId(),
                 review.getUser().getId(),
                 review.getCafe().getId(),

@@ -9,9 +9,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class UserDto {
+
+    /** User Entity 와 동일한 구조를 가지는 DTO **/
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserDTO {
+        private Long id;
+        private String email;
+        private String userName;
+
+        private List<ReviewDto.ReviewDTO> reviews;
+        private List<FavoriteDto.FavoriteDTO> favorites;
+    }
+
 
     /** 로그인을 위한 요청을 처리하는 DTO **/
     @Data
@@ -24,17 +39,6 @@ public class UserDto {
         private String username;
     }
 
-    /** User Entity 와 동일한 구조를 가지는 DTO **/
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class UserDTO {
-        private Long id;
-        private String email;
-        private String userName;
-        private List<Review> reviews;
-        private List<Favorite> favorites;
-    }
 
     /** User 엔티티를 UserDTO 로 변환하는 함수 **/
     public static UserDTO mapEntityToUserDTO(User user) {
@@ -43,8 +47,9 @@ public class UserDto {
         userDTO.setId(user.getId());
         userDTO.setEmail(user.getEmail());
         userDTO.setUserName(user.getUserName());
-        userDTO.setReviews(user.getReviews());
-        userDTO.setFavorites(user.getFavorites());
+
+        userDTO.setReviews(user.getReviews().stream().map(ReviewDto::mapEntityToReviewDTO).collect(Collectors.toList()));
+        userDTO.setFavorites(user.getFavorites().stream().map(FavoriteDto::mapEntityToFavoriteDTO).collect(Collectors.toList()));
 
         return userDTO;
     }
