@@ -6,9 +6,11 @@ import com.skkucapstone.Castardbackend.domain.Favorite;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CafeDto {
 
+    /** Cafe Entity 와 동일한 구조를 가지는 DTO **/
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -38,10 +40,11 @@ public class CafeDto {
         private Long bright_cnt;
         private Long clean_cnt;
 
-        private List<Review> reviews;
-        private List<Favorite> favorites;
+        private List<ReviewDto.ReviewDTO> reviews;
+        private List<FavoriteDto.FavoriteDTO> favorites;
     }
 
+    /** Cafe 엔티티를 CafeDTO 로 변환하는 함수 **/
     public static CafeDTO mapEntityToCafeDTO(Cafe cafe) {
         CafeDTO cafeDTO = new CafeDTO();
 
@@ -70,8 +73,8 @@ public class CafeDto {
         cafeDTO.setBright_cnt(cafe.getBright_cnt());
         cafeDTO.setClean_cnt(cafe.getClean_cnt());
 
-        cafeDTO.setFavorites(cafe.getFavorites());
-        cafeDTO.setReviews(cafe.getReviews());
+        cafeDTO.setReviews(cafe.getReviews().stream().map(ReviewDto::mapEntityToReviewDTO).collect(Collectors.toList()));
+        cafeDTO.setFavorites(cafe.getFavorites().stream().map(FavoriteDto::mapEntityToFavoriteDTO).collect(Collectors.toList()));
 
         return cafeDTO;
     }
