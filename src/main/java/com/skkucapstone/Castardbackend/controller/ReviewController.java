@@ -19,8 +19,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.skkucapstone.Castardbackend.dto.ReviewDto.createNewCafeFromDTO;
-import static com.skkucapstone.Castardbackend.dto.ReviewDto.mapToReviewShowResponseDTO;
+import static com.skkucapstone.Castardbackend.dto.ReviewDto.mapReviewCreateRequestDtoToEntity;
+import static com.skkucapstone.Castardbackend.dto.ReviewDto.mapEntityToReviewShowResponseDTO;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +44,7 @@ public class ReviewController {
         // 카페 확인 및 필요시 생성
         Optional<Cafe> cafeById = cafeService.getCafeById(reviewCreateRequestDTO.getCafeId());
         if (cafeById.isEmpty()) {
-            Cafe newCafe = createNewCafeFromDTO(reviewCreateRequestDTO);
+            Cafe newCafe = mapReviewCreateRequestDtoToEntity(reviewCreateRequestDTO);
             cafeService.saveCafe(newCafe);
 
             // 새로 저장한 카페 객체를 다시 조회: 영속성 컨텍스트에서 관리되도록 하기
@@ -56,7 +56,7 @@ public class ReviewController {
         }
 
         // 리뷰 저장
-        Review review = ReviewDto.mapToEntity(reviewCreateRequestDTO, userById.get(), cafeById.get());
+        Review review = ReviewDto.mapReviewCreateRequestDTOToEntity(reviewCreateRequestDTO, userById.get(), cafeById.get());
         Review savedReview = reviewService.saveReview(review);
 
         // 성공 200 메시지 반환
@@ -94,7 +94,7 @@ public class ReviewController {
         if (optionalReviews.isPresent()) {
             List<Review> reviews = optionalReviews.get();
             List<ReviewDto.ReviewShowResponseDTO> responseDTOs = reviews.stream()
-                    .map(review -> mapToReviewShowResponseDTO(review))
+                    .map(review -> mapEntityToReviewShowResponseDTO(review))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(responseDTOs);
         } else {
@@ -110,7 +110,7 @@ public class ReviewController {
         if (optionalReviews.isPresent()) {
             List<Review> reviews = optionalReviews.get();
             List<ReviewDto.ReviewShowResponseDTO> responseDTOs = reviews.stream()
-                    .map(review -> mapToReviewShowResponseDTO(review))
+                    .map(review -> mapEntityToReviewShowResponseDTO(review))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(responseDTOs);
         } else {
