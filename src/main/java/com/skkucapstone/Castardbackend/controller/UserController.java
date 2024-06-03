@@ -1,9 +1,6 @@
 package com.skkucapstone.Castardbackend.controller;
 
-import com.skkucapstone.Castardbackend.domain.Cafe;
-import com.skkucapstone.Castardbackend.domain.Review;
 import com.skkucapstone.Castardbackend.domain.User;
-import com.skkucapstone.Castardbackend.dto.ReviewDto;
 import com.skkucapstone.Castardbackend.dto.UserDto;
 import com.skkucapstone.Castardbackend.service.UserService;
 import jakarta.validation.Valid;
@@ -14,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.skkucapstone.Castardbackend.dto.UserDto.mapEntityToLoginResponseDTO;
 
 
 /**
@@ -59,24 +58,29 @@ public class UserController {
 
     /** 로그인 기능 **/
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody @Valid UserDto.LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<UserDto.LoginResponseDTO> loginUser(@RequestBody @Valid UserDto.LoginRequestDTO loginRequestDTO) {
 
         Optional<User> userByEmail = userService.findUserByEmail(loginRequestDTO.getEmail());
 
         // User 가 DB에 존재하지 않는 경우 : DB에 유저 저장하는 회원가입 로직 실행
         if (userByEmail.isEmpty()) {
             // DTO 를 Entity 로 바꾸어 주는 함수를 정의하여, 사용
-            User user = UserDto.mapToEntity(loginRequestDTO);
+            User user = UserDto.mapLoginRequestDTOToEntity(loginRequestDTO);
 
             // DB에 User 저장
             User savedUser = userService.saveUser(user);
 
+            // 생성된 User 을 Dto 로 변환
+            UserDto.LoginResponseDTO loginResponseDTO = mapEntityToLoginResponseDTO(savedUser);
+
             // 성공 200 메시지 반환
-            return new ResponseEntity<>(savedUser, HttpStatus.OK);
+            return new ResponseEntity<>(loginResponseDTO, HttpStatus.OK);
         }
         // User 가 DB에 존재하는 경우
         else {
-            return new ResponseEntity<>(userByEmail.get(), HttpStatus.OK);
+            // 생성된 User 을 Dto 로 변환
+            UserDto.LoginResponseDTO loginResponseDTO = mapEntityToLoginResponseDTO(userByEmail.get());
+            return new ResponseEntity<>(loginResponseDTO, HttpStatus.OK);
         }
     }
 }

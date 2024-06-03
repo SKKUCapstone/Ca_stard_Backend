@@ -3,7 +3,6 @@ package com.skkucapstone.Castardbackend.dto;
 import com.skkucapstone.Castardbackend.domain.Cafe;
 import com.skkucapstone.Castardbackend.domain.Review;
 import com.skkucapstone.Castardbackend.domain.User;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -74,7 +73,7 @@ public class ReviewDto {
 
 
     /** 리뷰 작성 시 ReviewCreateRequestDTO 를 엔티티로 변환하는 함수 **/
-    public static Review mapToEntity(ReviewCreateRequestDTO reviewRequestDTO, User user, Cafe cafe) {
+    public static Review mapReviewCreateRequestDTOToEntity(ReviewCreateRequestDTO reviewRequestDTO, User user, Cafe cafe) {
 
         Review review = new Review();
 
@@ -114,7 +113,7 @@ public class ReviewDto {
     }
 
     /** 리뷰 조회 시 review 엔티티를 ReviewShowResponseDTO 로 변환해주는 함수 **/
-    public static ReviewShowResponseDTO mapToReviewShowResponseDTO(Review review) {
+    public static ReviewShowResponseDTO mapEntityToReviewShowResponseDTO(Review review) {
         return new ReviewShowResponseDTO(
                 review.getId(),
                 review.getUser().getId(),
@@ -132,7 +131,7 @@ public class ReviewDto {
         );
     }
 
-    public static Cafe createNewCafeFromDTO(ReviewDto.ReviewCreateRequestDTO reviewCreateRequestDTO) {
+    public static Cafe mapReviewCreateRequestDtoToEntity(ReviewDto.ReviewCreateRequestDTO reviewCreateRequestDTO) {
         Long id = reviewCreateRequestDTO.getCafeId();
         String cafeName = reviewCreateRequestDTO.getCafeName();
         String address = reviewCreateRequestDTO.getAddress();
