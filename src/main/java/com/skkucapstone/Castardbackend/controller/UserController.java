@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
-import static com.skkucapstone.Castardbackend.dto.UserDto.mapEntityToLoginResponseDTO;
+import static com.skkucapstone.Castardbackend.dto.UserDto.mapEntityToUserDTO;
 
 
 /**
@@ -29,17 +30,22 @@ public class UserController {
 
     private final UserService userService;
 
+    /** 모든 회원 조회 **/
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDto.UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        List<UserDto.UserDTO> userDTOs = users.stream()
+                .map(UserDto::mapEntityToUserDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
+
 
     /** userId로 특정 회원 조회, 유저 객체 자체를 리턴 **/
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+    public ResponseEntity<UserDto.UserDTO> getUserById(@PathVariable Long userId) {
         return userService.getUserById(userId)
-                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .map(user -> new ResponseEntity<>(UserDto.mapEntityToUserDTO(user), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -58,7 +64,7 @@ public class UserController {
 
     /** 로그인 기능 **/
     @PostMapping("/login")
-    public ResponseEntity<UserDto.LoginResponseDTO> loginUser(@RequestBody @Valid UserDto.LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<UserDto.UserDTO> loginUser(@RequestBody @Valid UserDto.LoginRequestDTO loginRequestDTO) {
 
         Optional<User> userByEmail = userService.findUserByEmail(loginRequestDTO.getEmail());
 
@@ -71,16 +77,16 @@ public class UserController {
             User savedUser = userService.saveUser(user);
 
             // 생성된 User 을 Dto 로 변환
-            UserDto.LoginResponseDTO loginResponseDTO = mapEntityToLoginResponseDTO(savedUser);
+            UserDto.UserDTO userDTO = mapEntityToUserDTO(savedUser);
 
             // 성공 200 메시지 반환
-            return new ResponseEntity<>(loginResponseDTO, HttpStatus.OK);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
         // User 가 DB에 존재하는 경우
         else {
             // 생성된 User 을 Dto 로 변환
-            UserDto.LoginResponseDTO loginResponseDTO = mapEntityToLoginResponseDTO(userByEmail.get());
-            return new ResponseEntity<>(loginResponseDTO, HttpStatus.OK);
+            UserDto.UserDTO userDTO = mapEntityToUserDTO(userByEmail.get());
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.skkucapstone.Castardbackend.controller;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
+import com.skkucapstone.Castardbackend.dto.CafeDto;
 import com.skkucapstone.Castardbackend.service.CafeService;
 import com.skkucapstone.Castardbackend.service.KakaoService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -27,22 +29,25 @@ public class CafeController {
     private final KakaoService kakaoService;
 
     @GetMapping
-    public ResponseEntity<List<Cafe>> getAllCafes() {
+    public ResponseEntity<List<CafeDto.CafeDTO>> getAllCafes() {
         List<Cafe> cafes = cafeService.getAllCafes();
-        return new ResponseEntity<>(cafes, HttpStatus.OK);
+        List<CafeDto.CafeDTO> cafeDTOS = cafes.stream()
+                .map(CafeDto::mapEntityToCafeDTO)
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(cafeDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cafe> getCafeById(@PathVariable Long id) {
+    public ResponseEntity<CafeDto.CafeDTO> getCafeById(@PathVariable Long id) {
         return cafeService.getCafeById(id)
-                .map(cafe -> new ResponseEntity<>(cafe, HttpStatus.OK))
+                .map(cafe -> new ResponseEntity<>(CafeDto.mapEntityToCafeDTO(cafe), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public ResponseEntity<Cafe> saveCafe(@RequestBody Cafe cafe) {
+    public ResponseEntity<Long> saveCafe(@RequestBody Cafe cafe) {
         Cafe savedCafe = cafeService.saveCafe(cafe);
-        return new ResponseEntity<>(savedCafe, HttpStatus.CREATED);
+        return new ResponseEntity<>(savedCafe.getId(), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -86,7 +91,10 @@ public class CafeController {
         // 필터를 준 경우 CafeService 를 통해 검색 : DB 속 카페만을 대상으로 검색
         else {
             List<Cafe> cafes = cafeService.searchCafes(x, y, radius, searchText, powerSocket, capacity, quiet, wifi, tables, toilet, bright, clean);
-            return ResponseEntity.ok(cafes);
+            List<CafeDto.CafeDTO> cafeDTOS = cafes.stream()
+                    .map(CafeDto::mapEntityToCafeDTO)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(cafeDTOS);
         }
     }
 
