@@ -1,10 +1,13 @@
 package com.skkucapstone.Castardbackend.service;
 
+import com.skkucapstone.Castardbackend.dto.CafeDto;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class KakaoService {
@@ -19,7 +22,7 @@ public class KakaoService {
      * @param size 페이지당 조회 수 15
      * @return ResponseEntity
      */
-    public ResponseEntity<String> getSearchCafeList(String longitude, String latitude, String radius, String page, String size) {
+    public ResponseEntity<List<CafeDto.CafeDTO>> getSearchCafeList(String longitude, String latitude, String radius, String page, String size) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -30,15 +33,21 @@ public class KakaoService {
         String baseUrl = "https://dapi.kakao.com/v2/local/search/category.json?" +
                 "category_group_code=CE7" +
                 "&page=" + page +
-                "&size="+ size +
+                "&size=" + size +
                 "&sort=distance" +
                 "&radius=" + radius +
                 "&x=" + latitude +
                 "&y=" + longitude;
 
         RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Map> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity, Map.class);
 
-        return restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
+        List<CafeDto.CafeDTO> cafes = ((List<Map<String, Object>>) response.getBody().get("documents"))
+                .stream()
+                .map(CafeDto::fromKakaoResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(cafes);
     }
 
     /**
@@ -52,7 +61,7 @@ public class KakaoService {
      * @param size 페이지당 조회 수 15
      * @return ResponseEntity
      */
-    public ResponseEntity<String> getSearchCafeQuery(String query, String longitude, String latitude, String radius, String page, String size) {
+    public ResponseEntity<List<CafeDto.CafeDTO>> getSearchCafeQuery(String query, String longitude, String latitude, String radius, String page, String size) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -65,14 +74,20 @@ public class KakaoService {
                 "&query=" + query +
                 "&radius=" + radius +
                 "&page=" + page +
-                "&size="+ size +
+                "&size=" + size +
                 "&sort=distance" +
                 "&x=" + latitude +
                 "&y=" + longitude;
 
         RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Map> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity, Map.class);
 
-        return restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
+        List<CafeDto.CafeDTO> cafes = ((List<Map<String, Object>>) response.getBody().get("documents"))
+                .stream()
+                .map(CafeDto::fromKakaoResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(cafes);
     }
 
 
