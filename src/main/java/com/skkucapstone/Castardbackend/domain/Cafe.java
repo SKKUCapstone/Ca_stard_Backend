@@ -27,6 +27,8 @@ public class Cafe {
 
     private Double latitude; // y좌표
 
+    private String place_url;
+
     // 카공에 대한 리뷰들의 평균을 유지하는 필드들.
     private Double power_socket = 0D;
     private Double capacity = 0D;

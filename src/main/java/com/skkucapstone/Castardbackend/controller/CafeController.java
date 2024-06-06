@@ -82,9 +82,9 @@ public class CafeController {
             String page = "5"; // 기본 페이지 번호
 
             if (searchText == null || searchText.isEmpty()) {
-                return kakaoService.getSearchCafeList(longitude, latitude, radiusStr, page, "15");
+                return kakaoService.getSearchCafeList(latitude, longitude, radiusStr, page, "15");
             } else {
-                return kakaoService.getSearchCafeQuery(searchText, longitude, latitude, radiusStr, page, "15");
+                return kakaoService.getSearchCafeQuery(searchText, latitude, longitude, radiusStr, page, "15");
             }
         }
         // 필터를 준 경우 CafeService 를 통해 검색 : DB 속 카페만을 대상으로 검색
