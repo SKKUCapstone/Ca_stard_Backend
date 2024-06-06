@@ -1,8 +1,6 @@
 package com.skkucapstone.Castardbackend.dto;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
-import com.skkucapstone.Castardbackend.domain.Review;
-import com.skkucapstone.Castardbackend.domain.Favorite;
 import lombok.*;
 
 import java.util.List;
@@ -18,10 +16,11 @@ public class CafeDto {
     public static class CafeDTO {
         private Long id;
         private String cafeName;
-        private String address;
+        private String road_address_name;
         private String phone;
         private Double longitude;
         private Double latitude;
+        private String place_url;
 
         private Double power_socket = 0.0;
         private Double capacity = 0.0;
@@ -51,10 +50,11 @@ public class CafeDto {
 
         cafeDTO.id = Long.valueOf((String) kakaoResponse.get("id"));
         cafeDTO.cafeName = (String) kakaoResponse.get("place_name");
-        cafeDTO.address = (String) kakaoResponse.get("road_address_name");
+        cafeDTO.road_address_name = (String) kakaoResponse.get("road_address_name");
         cafeDTO.phone = (String) kakaoResponse.get("phone");
         cafeDTO.longitude = Double.parseDouble((String) kakaoResponse.get("x"));
         cafeDTO.latitude = Double.parseDouble((String) kakaoResponse.get("y"));
+        cafeDTO.place_url = (String) kakaoResponse.get("place_url");
 
         return cafeDTO;
     }
@@ -65,10 +65,11 @@ public class CafeDto {
 
         cafeDTO.setId(cafe.getId());
         cafeDTO.setCafeName(cafe.getCafeName());
-        cafeDTO.setAddress(cafe.getAddress());
+        cafeDTO.setRoad_address_name(cafe.getAddress());
         cafeDTO.setPhone(cafe.getPhone());
         cafeDTO.setLongitude(cafe.getLongitude());
         cafeDTO.setLatitude(cafe.getLatitude());
+        cafeDTO.setPlace_url(cafe.getPlace_url());
 
         cafeDTO.setPower_socket(cafe.getPower_socket());
         cafeDTO.setCapacity(cafe.getCapacity());
