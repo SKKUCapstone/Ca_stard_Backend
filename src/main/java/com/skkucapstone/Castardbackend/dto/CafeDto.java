@@ -15,7 +15,7 @@ public class CafeDto {
     @NoArgsConstructor
     public static class CafeDTO {
         private Long id;
-        private String cafeName;
+        private String cafe_name;
         private String road_address_name;
         private String phone;
         private Double longitude;
@@ -49,7 +49,7 @@ public class CafeDto {
         CafeDTO cafeDTO = new CafeDTO();
 
         cafeDTO.id = Long.valueOf((String) kakaoResponse.get("id"));
-        cafeDTO.cafeName = (String) kakaoResponse.get("place_name");
+        cafeDTO.cafe_name = (String) kakaoResponse.get("place_name");
         cafeDTO.road_address_name = (String) kakaoResponse.get("road_address_name");
         cafeDTO.phone = (String) kakaoResponse.get("phone");
         cafeDTO.longitude = Double.parseDouble((String) kakaoResponse.get("x"));
@@ -64,7 +64,7 @@ public class CafeDto {
         CafeDTO cafeDTO = new CafeDTO();
 
         cafeDTO.setId(cafe.getId());
-        cafeDTO.setCafeName(cafe.getCafeName());
+        cafeDTO.setCafe_name(cafe.getCafeName());
         cafeDTO.setRoad_address_name(cafe.getAddress());
         cafeDTO.setPhone(cafe.getPhone());
         cafeDTO.setLongitude(cafe.getLongitude());
