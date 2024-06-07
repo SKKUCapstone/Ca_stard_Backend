@@ -4,8 +4,11 @@ import com.skkucapstone.Castardbackend.domain.Cafe;
 import com.skkucapstone.Castardbackend.domain.Favorite;
 import com.skkucapstone.Castardbackend.domain.User;
 import com.skkucapstone.Castardbackend.dto.FavoriteDto;
+import com.skkucapstone.Castardbackend.service.CafeService;
 import com.skkucapstone.Castardbackend.service.FavoriteService;
+import com.skkucapstone.Castardbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,19 +23,44 @@ import java.util.stream.Collectors;
 public class FavoriteController {
 
     private final FavoriteService favoriteService;
+    private final UserService userService;
+    private final CafeService cafeService;
+
 
     /** 즐겨찾기 추가 **/
     @PostMapping("/post")
-    public ResponseEntity<Long> addFavorite(@RequestBody FavoriteDto.FavoriteRequestDTO favoriteRequestDTO) {
-        Favorite favorite = favoriteService.addFavorite(favoriteRequestDTO.getUserId(), favoriteRequestDTO.getCafeId());
-        return ResponseEntity.ok(favorite.getId());
+    public ResponseEntity<Map<String, String>> addFavorite(@RequestBody FavoriteDto.FavoriteRequestDTO favoriteRequestDTO) {
+        Long userId = favoriteRequestDTO.getUserId();
+        Long cafeId = favoriteRequestDTO.getCafeId();
+
+        Map<String, String> response = new HashMap<>();
+
+        if (userService.getUserById(userId).isEmpty()){
+            response.put("message", "userID Not found");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        if (cafeService.getCafeById(userId).isEmpty()){
+            response.put("message", "cafeID Not found");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+
+        Favorite favorite = favoriteService.addFavorite(userId, cafeId);
+        response.put("favoriteId", favorite.getId().toString());
+        response.put("message", "favorite added");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /** 즐겨찾기 삭제 **/
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> removeFavorite(@RequestBody FavoriteDto.FavoriteRequestDTO favoriteRequestDTO) {
+    public ResponseEntity<Map<String, String>> removeFavorite(@RequestBody FavoriteDto.FavoriteRequestDTO favoriteRequestDTO) {
         favoriteService.removeFavorite(favoriteRequestDTO.getUserId(), favoriteRequestDTO.getCafeId());
-        return ResponseEntity.noContent().build();
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "favorite deleted");
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /** 특정 유저의 즐겨찾기 목록 조회 **/
