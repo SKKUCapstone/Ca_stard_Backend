@@ -1,6 +1,7 @@
 package com.skkucapstone.Castardbackend.controller;
 
 import com.skkucapstone.Castardbackend.domain.User;
+import com.skkucapstone.Castardbackend.dto.CafeDto;
 import com.skkucapstone.Castardbackend.dto.UserDto;
 import com.skkucapstone.Castardbackend.service.UserService;
 import jakarta.validation.Valid;
@@ -15,13 +16,6 @@ import java.util.stream.Collectors;
 
 import static com.skkucapstone.Castardbackend.dto.UserDto.mapEntityToUserDTO;
 
-
-/**
- *
- * 로그인 기능 제외한 다른 API 의 경우
- * DTO 없이 단순하게 개발함. 테스트용임.
- *
- */
 
 @RestController
 @RequiredArgsConstructor
@@ -89,4 +83,12 @@ public class UserController {
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         }
     }
+
+//    /** 특정 유저에게 카페 추천 **/
+//    public ResponseEntity<CafeDto.CafeDTO> recommendCafe(Long id) {
+//        Optional<User> userById = userService.getUserById(id);
+//        if (userById.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 }
