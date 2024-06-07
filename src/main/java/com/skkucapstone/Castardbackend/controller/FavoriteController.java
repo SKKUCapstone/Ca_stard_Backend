@@ -40,7 +40,7 @@ public class FavoriteController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
-        if (cafeService.getCafeById(userId).isEmpty()){
+        if (cafeService.getCafeById(cafeId).isEmpty()){
             response.put("message", "cafeID Not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
