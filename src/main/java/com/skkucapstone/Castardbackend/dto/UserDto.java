@@ -27,6 +27,15 @@ public class UserDto {
         private List<FavoriteDto.FavoriteDTO> favorites;
     }
 
+    /** UserDTO 에 리뷰와 즐겨찾기 정보만 제와한 DTO **/
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserInfoDTO {
+        private Long id;
+        private String email;
+        private String userName;
+    }
 
     /** 로그인을 위한 요청을 처리하는 DTO **/
     @Data
@@ -52,6 +61,17 @@ public class UserDto {
         userDTO.setFavorites(user.getFavorites().stream().map(FavoriteDto::mapEntityToFavoriteDTO).collect(Collectors.toList()));
 
         return userDTO;
+    }
+
+    /** User 엔티티를 UserInfoDTO 로 변환하는 함수 **/
+    public static UserInfoDTO mapEntityToUserInfoDTO(User user) {
+        UserInfoDTO userInfoDTO = new UserInfoDTO();
+
+        userInfoDTO.setId(user.getId());
+        userInfoDTO.setEmail(user.getEmail());
+        userInfoDTO.setUserName(user.getUserName());
+
+        return userInfoDTO;
     }
 
     /** 회원 가입 시 LoginRequestDTO 를 회원 User 엔티티로 변환하는 함수 **/

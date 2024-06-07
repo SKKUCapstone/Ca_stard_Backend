@@ -44,6 +44,38 @@ public class CafeDto {
         private List<FavoriteDto.FavoriteDTO> favorites = List.of();
     }
 
+    /** CafeDTO 에 리뷰와 즐겨찾기 정보만 제외한 DTO **/
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CafeInfoDTO {
+        private Long id;
+        private String cafe_name;
+        private String road_address_name;
+        private String phone;
+        private Double longitude;
+        private Double latitude;
+        private String place_url;
+
+        private Double power_socket = 0.0;
+        private Double capacity = 0.0;
+        private Double quiet = 0.0;
+        private Double wifi = 0.0;
+        private Double tables = 0.0;
+        private Double toilet = 0.0;
+        private Double bright = 0.0;
+        private Double clean = 0.0;
+
+        private Long power_socket_cnt = 0L;
+        private Long capacity_cnt = 0L;
+        private Long quiet_cnt = 0L;
+        private Long wifi_cnt = 0L;
+        private Long tables_cnt = 0L;
+        private Long toilet_cnt = 0L;
+        private Long bright_cnt = 0L;
+        private Long clean_cnt = 0L;
+    }
+
     /** 카카오 API 응답을 CafeDTO 로 변환하는 함수 **/
     public static CafeDTO fromKakaoResponse(Map<String, Object> kakaoResponse) {
         CafeDTO cafeDTO = new CafeDTO();
@@ -93,5 +125,38 @@ public class CafeDto {
         cafeDTO.setFavorites(cafe.getFavorites().stream().map(FavoriteDto::mapEntityToFavoriteDTO).collect(Collectors.toList()));
 
         return cafeDTO;
+    }
+
+    /** Cafe 엔티티를 CafeInfoDTO 로 변환하는 함수 **/
+    public static CafeInfoDTO mapEntityToCafeInfoDTO(Cafe cafe) {
+        CafeInfoDTO cafeInfoDTO = new CafeInfoDTO();
+
+        cafeInfoDTO.setId(cafe.getId());
+        cafeInfoDTO.setCafe_name(cafe.getCafeName());
+        cafeInfoDTO.setRoad_address_name(cafe.getAddress());
+        cafeInfoDTO.setPhone(cafe.getPhone());
+        cafeInfoDTO.setLongitude(cafe.getLongitude());
+        cafeInfoDTO.setLatitude(cafe.getLatitude());
+        cafeInfoDTO.setPlace_url(cafe.getPlace_url());
+
+        cafeInfoDTO.setPower_socket(cafe.getPower_socket());
+        cafeInfoDTO.setCapacity(cafe.getCapacity());
+        cafeInfoDTO.setQuiet(cafe.getQuiet());
+        cafeInfoDTO.setWifi(cafe.getWifi());
+        cafeInfoDTO.setTables(cafe.getTables());
+        cafeInfoDTO.setToilet(cafe.getToilet());
+        cafeInfoDTO.setBright(cafe.getBright());
+        cafeInfoDTO.setClean(cafe.getClean());
+
+        cafeInfoDTO.setPower_socket_cnt(cafe.getPower_socket_cnt());
+        cafeInfoDTO.setCapacity_cnt(cafe.getCapacity_cnt());
+        cafeInfoDTO.setQuiet_cnt(cafe.getQuiet_cnt());
+        cafeInfoDTO.setWifi_cnt(cafe.getWifi_cnt());
+        cafeInfoDTO.setTables_cnt(cafe.getTables_cnt());
+        cafeInfoDTO.setToilet_cnt(cafe.getToilet_cnt());
+        cafeInfoDTO.setBright_cnt(cafe.getBright_cnt());
+        cafeInfoDTO.setClean_cnt(cafe.getClean_cnt());
+
+        return cafeInfoDTO;
     }
 }

@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static com.skkucapstone.Castardbackend.dto.CafeDto.mapEntityToCafeInfoDTO;
+import static com.skkucapstone.Castardbackend.dto.UserDto.mapEntityToUserInfoDTO;
+
 public class FavoriteDto {
 
     /** Favorite Entity 와 동일한 구조를 가지는 DTO **/
@@ -15,8 +18,8 @@ public class FavoriteDto {
     @NoArgsConstructor
     public static class FavoriteDTO {
         private Long id;
-        private Long userId;
-        private Long cafeId;
+        private UserDto.UserInfoDTO user;
+        private CafeDto.CafeInfoDTO cafe;
     }
 
     /** 즐겨찾기 추가 및 삭제를 위한 요청을 처리하는 DTO **/
@@ -35,8 +38,8 @@ public class FavoriteDto {
         FavoriteDTO favoriteDTO = new FavoriteDTO();
 
         favoriteDTO.setId(favorite.getId());
-        favoriteDTO.setUserId(favorite.getUser().getId());
-        favoriteDTO.setCafeId(favorite.getCafe().getId());
+        favoriteDTO.setUser(mapEntityToUserInfoDTO(favorite.getUser()));
+        favoriteDTO.setCafe(mapEntityToCafeInfoDTO(favorite.getCafe()));
 
         return favoriteDTO;
     }

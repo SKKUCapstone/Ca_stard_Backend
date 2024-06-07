@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+import static com.skkucapstone.Castardbackend.dto.CafeDto.mapEntityToCafeInfoDTO;
+import static com.skkucapstone.Castardbackend.dto.UserDto.mapEntityToUserInfoDTO;
+
 public class ReviewDto {
 
     /** Review Entity 와 동일한 구조를 가지는 DTO **/
@@ -18,8 +21,8 @@ public class ReviewDto {
     @NoArgsConstructor
     public static class ReviewDTO {
         private Long id;
-        private Long userId;
-        private Long cafeId;
+        private UserDto.UserInfoDTO user;
+        private CafeDto.CafeInfoDTO cafe;
         private LocalDateTime timestamp;
         private String comment;
 
@@ -117,8 +120,8 @@ public class ReviewDto {
     public static ReviewDTO mapEntityToReviewDTO(Review review) {
         return new ReviewDTO(
                 review.getId(),
-                review.getUser().getId(),
-                review.getCafe().getId(),
+                mapEntityToUserInfoDTO(review.getUser()),
+                mapEntityToCafeInfoDTO(review.getCafe()),
                 review.getTimestamp(),
                 review.getComment(),
                 review.getPower_socket(),

@@ -1,6 +1,7 @@
 package com.skkucapstone.Castardbackend.service;
 
 import com.skkucapstone.Castardbackend.domain.User;
+import com.skkucapstone.Castardbackend.dto.CafeDto;
 import com.skkucapstone.Castardbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
