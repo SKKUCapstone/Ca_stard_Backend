@@ -2,6 +2,8 @@ package com.skkucapstone.Castardbackend.service;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
 import com.skkucapstone.Castardbackend.dto.CafeDto;
+import com.skkucapstone.Castardbackend.dto.FavoriteDto;
+import com.skkucapstone.Castardbackend.dto.ReviewDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -78,6 +80,9 @@ public class KakaoService {
                 cafeDTO.setToilet_cnt(cafe.getToilet_cnt());
                 cafeDTO.setBright_cnt(cafe.getBright_cnt());
                 cafeDTO.setClean_cnt(cafe.getClean_cnt());
+
+                cafeDTO.setReviews(cafe.getReviews().stream().map(ReviewDto::mapEntityToReviewDTO).collect(Collectors.toList()));
+                cafeDTO.setFavorites(cafe.getFavorites().stream().map(FavoriteDto::mapEntityToFavoriteDTO).collect(Collectors.toList()));
             }
         }
 
@@ -144,6 +149,9 @@ public class KakaoService {
                 cafeDTO.setToilet_cnt(cafe.getToilet_cnt());
                 cafeDTO.setBright_cnt(cafe.getBright_cnt());
                 cafeDTO.setClean_cnt(cafe.getClean_cnt());
+
+                cafeDTO.setReviews(cafe.getReviews().stream().map(ReviewDto::mapEntityToReviewDTO).collect(Collectors.toList()));
+                cafeDTO.setFavorites(cafe.getFavorites().stream().map(FavoriteDto::mapEntityToFavoriteDTO).collect(Collectors.toList()));
             }
         }
 
