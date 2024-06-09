@@ -1,16 +1,24 @@
 package com.skkucapstone.Castardbackend.service;
 
+import com.skkucapstone.Castardbackend.domain.Cafe;
 import com.skkucapstone.Castardbackend.dto.CafeDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class KakaoService {
+
+    private final CafeService cafeService;
 
     /**
      * 좌표 기준 카페 데이터 조회
@@ -46,6 +54,32 @@ public class KakaoService {
                 .stream()
                 .map(CafeDto::fromKakaoResponse)
                 .collect(Collectors.toList());
+
+        // Cafe ID로 DB를 뒤져서, DB에 이미 존재하는 카페들은 리뷰 정보를 가져오는 로직
+        for (CafeDto.CafeDTO cafeDTO : cafes) {
+            Optional<Cafe> cafeById = cafeService.getCafeById(cafeDTO.getId());
+            if (cafeById.isPresent()) {
+                Cafe cafe = cafeById.get();
+
+                cafeDTO.setPower_socket(cafe.getPower_socket());
+                cafeDTO.setCapacity(cafe.getCapacity());
+                cafeDTO.setQuiet(cafe.getQuiet());
+                cafeDTO.setWifi(cafe.getWifi());
+                cafeDTO.setTables(cafe.getTables());
+                cafeDTO.setToilet(cafe.getToilet());
+                cafeDTO.setBright(cafe.getBright());
+                cafeDTO.setClean(cafe.getClean());
+
+                cafeDTO.setPower_socket_cnt(cafe.getPower_socket_cnt());
+                cafeDTO.setCapacity_cnt(cafe.getCapacity_cnt());
+                cafeDTO.setQuiet_cnt(cafe.getQuiet_cnt());
+                cafeDTO.setWifi_cnt(cafe.getWifi_cnt());
+                cafeDTO.setTables_cnt(cafe.getTables_cnt());
+                cafeDTO.setToilet_cnt(cafe.getToilet_cnt());
+                cafeDTO.setBright_cnt(cafe.getBright_cnt());
+                cafeDTO.setClean_cnt(cafe.getClean_cnt());
+            }
+        }
 
         return ResponseEntity.ok(cafes);
     }
@@ -86,6 +120,32 @@ public class KakaoService {
                 .stream()
                 .map(CafeDto::fromKakaoResponse)
                 .collect(Collectors.toList());
+
+        // Cafe ID로 DB를 뒤져서, DB에 이미 존재하는 카페들은 리뷰 정보를 가져오는 로직
+        for (CafeDto.CafeDTO cafeDTO : cafes) {
+            Optional<Cafe> cafeById = cafeService.getCafeById(cafeDTO.getId());
+            if (cafeById.isPresent()) {
+                Cafe cafe = cafeById.get();
+
+                cafeDTO.setPower_socket(cafe.getPower_socket());
+                cafeDTO.setCapacity(cafe.getCapacity());
+                cafeDTO.setQuiet(cafe.getQuiet());
+                cafeDTO.setWifi(cafe.getWifi());
+                cafeDTO.setTables(cafe.getTables());
+                cafeDTO.setToilet(cafe.getToilet());
+                cafeDTO.setBright(cafe.getBright());
+                cafeDTO.setClean(cafe.getClean());
+
+                cafeDTO.setPower_socket_cnt(cafe.getPower_socket_cnt());
+                cafeDTO.setCapacity_cnt(cafe.getCapacity_cnt());
+                cafeDTO.setQuiet_cnt(cafe.getQuiet_cnt());
+                cafeDTO.setWifi_cnt(cafe.getWifi_cnt());
+                cafeDTO.setTables_cnt(cafe.getTables_cnt());
+                cafeDTO.setToilet_cnt(cafe.getToilet_cnt());
+                cafeDTO.setBright_cnt(cafe.getBright_cnt());
+                cafeDTO.setClean_cnt(cafe.getClean_cnt());
+            }
+        }
 
         return ResponseEntity.ok(cafes);
     }
