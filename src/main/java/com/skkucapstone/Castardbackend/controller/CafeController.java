@@ -2,6 +2,7 @@ package com.skkucapstone.Castardbackend.controller;
 
 import com.skkucapstone.Castardbackend.domain.Cafe;
 import com.skkucapstone.Castardbackend.dto.CafeDto;
+import com.skkucapstone.Castardbackend.service.CafeRecommendationService;
 import com.skkucapstone.Castardbackend.service.CafeService;
 import com.skkucapstone.Castardbackend.service.KakaoService;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- *
- * DTO 없이 단순하게 개발. 테스트용임.
- * 추후 변경 예정
- *
- */
-
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cafes")
@@ -27,6 +20,8 @@ public class CafeController {
 
     private final CafeService cafeService;
     private final KakaoService kakaoService;
+    private final CafeRecommendationService cafeRecommendationService;
+
 
     @GetMapping
     public ResponseEntity<List<CafeDto.CafeDTO>> getAllCafes() {
@@ -57,6 +52,7 @@ public class CafeController {
     }
 
 
+    /** 카페 리스트를 반환하는 API **/
     @GetMapping("/list")
     public ResponseEntity<?> searchCafes(@RequestParam(name = "x") double x,
                                          @RequestParam(name = "y") double y,
@@ -95,6 +91,13 @@ public class CafeController {
                     .collect(Collectors.toList());
             return ResponseEntity.ok(cafeDTOS);
         }
+    }
+
+    /** User 의 성향에 맞추어 카페들을 추천하여 반환하는 API **/
+    @GetMapping("/recommend")
+    public ResponseEntity<List<CafeDto.CafeDTO>> recommendCafes(@RequestParam Long userId, @RequestParam double latitude, @RequestParam double longitude) {
+        List<CafeDto.CafeDTO> recommendedCafes = cafeRecommendationService.recommendCafes(userId, latitude, longitude);
+        return ResponseEntity.ok(recommendedCafes);
     }
 
 }
