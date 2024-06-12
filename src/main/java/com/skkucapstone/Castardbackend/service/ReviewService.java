@@ -43,14 +43,17 @@ public class ReviewService {
         review.setTimestamp(LocalDateTime.now());
 
         // 카페 엔티티의 평점 값과 개수를 업데이트
-        cafeService.updateCafeRating(review.getCafe(), review);
+        cafeService.updateCafeAddRating(review.getCafe(), review);
 
         return reviewRepository.save(review);
     }
 
     /** 카페 리뷰를 삭제 **/
     @Transactional
-    public void deleteReview(Long id) {
+    public void deleteReview(Long id, Review review) {
+        // 카페 엔티티의 평점 값과 개수를 업데이트
+        cafeService.updateCafeDeleteRating(review.getCafe(), review);
+
         reviewRepository.deleteById(id);
     }
 }
