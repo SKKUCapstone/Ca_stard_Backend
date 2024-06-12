@@ -82,7 +82,7 @@ public class ReviewController {
             }
         }
 
-        reviewService.deleteReview(reviewDeleteRequestDTO.getReviewId());
+        reviewService.deleteReview(reviewDeleteRequestDTO.getReviewId() ,reviewById.get());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

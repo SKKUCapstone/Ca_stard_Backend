@@ -93,5 +93,75 @@ public class Cafe {
         return this;
     }
 
+    /** 해당 카페에 리뷰가 삭제되었을 때, 알맞게 평점 변경을 처리해주는 함수**/
+    public Cafe removeCafeRatings(Review review) {
+        if (review.getPower_socket() != 0 && power_socket_cnt > 0) {
 
+            // divide by zero 방지
+            if (power_socket_cnt == 1) {
+                power_socket = 0D;
+            } else {
+                power_socket = (power_socket * power_socket_cnt - review.getPower_socket()) / (power_socket_cnt - 1);
+            }
+            power_socket_cnt -= 1;
+        }
+        if (review.getCapacity() != 0 && capacity_cnt > 0) {
+            if (capacity_cnt == 1) {
+                capacity = 0D;
+            } else {
+                capacity = (capacity * capacity_cnt - review.getCapacity()) / (capacity_cnt - 1);
+            }
+            capacity_cnt -= 1;
+        }
+        if (review.getQuiet() != 0 && quiet_cnt > 0) {
+            if (quiet_cnt == 1) {
+                quiet = 0D;
+            } else {
+                quiet = (quiet * quiet_cnt - review.getQuiet()) / (quiet_cnt - 1);
+            }
+            quiet_cnt -= 1;
+        }
+        if (review.getWifi() != 0 && wifi_cnt > 0) {
+            if (wifi_cnt == 1) {
+                wifi = 0D;
+            } else {
+                wifi = (wifi * wifi_cnt - review.getWifi()) / (wifi_cnt - 1);
+            }
+            wifi_cnt -= 1;
+        }
+        if (review.getTables() != 0 && tables_cnt > 0) {
+            if (tables_cnt == 1) {
+                tables = 0D;
+            } else {
+                tables = (tables * tables_cnt - review.getTables()) / (tables_cnt - 1);
+            }
+            tables_cnt -= 1;
+        }
+        if (review.getToilet() != 0 && toilet_cnt > 0) {
+            if (toilet_cnt == 1) {
+                toilet = 0D;
+            } else {
+                toilet = (toilet * toilet_cnt - review.getToilet()) / (toilet_cnt - 1);
+            }
+            toilet_cnt -= 1;
+        }
+        if (review.getBright() != 0 && bright_cnt > 0) {
+            if (bright_cnt == 1) {
+                bright = 0D;
+            } else {
+                bright = (bright * bright_cnt - review.getBright()) / (bright_cnt - 1);
+            }
+            bright_cnt -= 1;
+        }
+        if (review.getClean() != 0 && clean_cnt > 0) {
+            if (clean_cnt == 1) {
+                clean = 0D;
+            } else {
+                clean = (clean * clean_cnt - review.getClean()) / (clean_cnt - 1);
+            }
+            clean_cnt -= 1;
+        }
+
+        return this;
+    }
 }
