@@ -30,6 +30,12 @@ public class FavoriteService {
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(() ->
                 new IllegalArgumentException("Invalid cafe Id:" + cafeId));
 
+        // 중복 즐겨찾기 방지 로직
+        List<Favorite> byUserIdAndCafeId = favoriteRepository.findByUserIdAndCafeId(userId, cafeId);
+        if (!byUserIdAndCafeId.isEmpty()) {
+            throw new IllegalStateException("Favorite already exists for user Id:" + userId + " and cafe Id:" + cafeId);
+        }
+
         Favorite favorite = new Favorite();
         favorite.setUser(user);
         favorite.setCafe(cafe);
@@ -43,6 +49,12 @@ public class FavoriteService {
                 new IllegalArgumentException("Invalid user Id:" + userId));
         Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(() ->
                 new IllegalArgumentException("Invalid cafe Id:" + cafeId));
+
+        // 존재하지 않는 즐겨찾기 삭제 시도를 방지하는 로직
+        List<Favorite> byUserIdAndCafeId = favoriteRepository.findByUserIdAndCafeId(userId, cafeId);
+        if (byUserIdAndCafeId.isEmpty()) {
+            throw new IllegalStateException("Favorite not exists for user Id:" + userId + " and cafe Id:" + cafeId);
+        }
 
         List<Favorite> favorites = favoriteRepository.findByUserId(userId);
         for (Favorite favorite : favorites) {
