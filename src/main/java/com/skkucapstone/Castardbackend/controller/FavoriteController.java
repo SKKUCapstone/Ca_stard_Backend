@@ -54,8 +54,13 @@ public class FavoriteController {
 
     /** 즐겨찾기 삭제 **/
     @DeleteMapping("/delete")
-    public ResponseEntity<Map<String, String>> removeFavorite(@RequestBody FavoriteDto.FavoriteRequestDTO favoriteRequestDTO) {
-        favoriteService.removeFavorite(favoriteRequestDTO.getUserId(), favoriteRequestDTO.getCafeId());
+    public ResponseEntity<Map<String, String>> removeFavorite(@RequestParam Long userId, Long cafeId) {
+        // userId 와 cafeId 는 notNull 이어야 함.
+        if (userId == null || cafeId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        favoriteService.removeFavorite(userId, cafeId);
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "favorite deleted");

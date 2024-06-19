@@ -65,24 +65,27 @@ public class ReviewController {
 
     /** 리뷰 삭제 **/
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> deleteReview(@RequestBody @Valid ReviewDto.ReviewDeleteRequestDTO reviewDeleteRequestDTO) {
+    public ResponseEntity<Void> deleteReview(@RequestParam Long reviewId, Long userId) {
+        // userId 와 reviewId 는 notNull 이어야 함.
+        if (userId == null || reviewId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         // 리뷰 작성자와 현재 로그인한 사용자와 일치 확인 로직
-        Optional<Review> reviewById = reviewService.getReviewById(reviewDeleteRequestDTO.getReviewId());
+        Optional<Review> reviewById = reviewService.getReviewById(reviewId);
         if (reviewById.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         else {
-            Long requestUserId = reviewDeleteRequestDTO.getUserId();
             Long reviewUserId = reviewById.get().getUser().getId();
 
             // 리뷰 삭제를 요청한 유저와, 리뷰 작성자가 다른 경우: 에러 리턴
-            if (!Objects.equals(requestUserId, reviewUserId)) {
+            if (!Objects.equals(userId, reviewUserId)) {
                 return ResponseEntity.internalServerError().build();
             }
         }
 
-        reviewService.deleteReview(reviewDeleteRequestDTO.getReviewId() ,reviewById.get());
+        reviewService.deleteReview(reviewId ,reviewById.get());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

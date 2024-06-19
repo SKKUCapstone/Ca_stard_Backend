@@ -22,7 +22,7 @@ public class FavoriteDto {
         private CafeDto.CafeInfoDTO cafe;
     }
 
-    /** 즐겨찾기 추가 및 삭제를 위한 요청을 처리하는 DTO **/
+    /** 즐겨찾기 추가를 위한 요청을 처리하는 DTO **/
     @Data
     @AllArgsConstructor
     @NoArgsConstructor

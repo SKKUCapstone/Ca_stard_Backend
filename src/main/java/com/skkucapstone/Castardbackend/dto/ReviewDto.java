@@ -64,17 +64,6 @@ public class ReviewDto {
         private String comment;
     }
 
-    /** 리뷰 삭제를 위한 요청을 처리하는 DTO **/
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class ReviewDeleteRequestDTO {
-        @NotNull
-        private Long reviewId;
-        @NotNull
-        private Long userId;
-    }
-
 
     /** 리뷰 작성 시 ReviewCreateRequestDTO 를 엔티티로 변환하는 함수 **/
     public static Review mapReviewCreateRequestDTOToEntity(ReviewCreateRequestDTO reviewRequestDTO, User user, Cafe cafe) {
