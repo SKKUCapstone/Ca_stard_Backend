@@ -23,7 +23,7 @@ public class CafeController {
     private final CafeRecommendationService cafeRecommendationService;
 
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<List<CafeDto.CafeDTO>> getAllCafes() {
         List<Cafe> cafes = cafeService.getAllCafes();
         List<CafeDto.CafeDTO> cafeDTOS = cafes.stream()
