@@ -87,8 +87,8 @@ public class ReviewController {
     }
 
     /** 유저 아이디를 통해 유저가 쓴 모든 리뷰 조회 **/
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ReviewDto.ReviewDTO>> getAllReviewsByUserId(@PathVariable("userId") Long userId) {
+    @GetMapping("/user")
+    public ResponseEntity<List<ReviewDto.ReviewDTO>> getAllReviewsByUserId(@RequestParam Long userId) {
         Optional<List<Review>> optionalReviews = reviewService.getAllReviewsByUserId(userId);
 
         if (optionalReviews.isPresent()) {
@@ -103,8 +103,8 @@ public class ReviewController {
     }
 
     /** 카페 아이디를 통해 해당 카페에 달린 모든 리뷰 조회 **/
-    @GetMapping("/cafe/{cafeId}")
-    public ResponseEntity<List<ReviewDto.ReviewDTO>> getAllReviewsByCafeId(@PathVariable("cafeId") Long cafeId) {
+    @GetMapping("/cafe")
+    public ResponseEntity<List<ReviewDto.ReviewDTO>> getAllReviewsByCafeId(@RequestParam Long cafeId) {
         Optional<List<Review>> optionalReviews = reviewService.getAllReviewsByCafeId(cafeId);
 
         if (optionalReviews.isPresent()) {

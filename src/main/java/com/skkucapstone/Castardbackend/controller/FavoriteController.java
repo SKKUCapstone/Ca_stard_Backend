@@ -64,8 +64,8 @@ public class FavoriteController {
     }
 
     /** 특정 유저의 즐겨찾기 목록 조회 **/
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<FavoriteDto.FavoriteDTO>> getUserFavorites(@PathVariable Long userId) {
+    @GetMapping("/user")
+    public ResponseEntity<List<FavoriteDto.FavoriteDTO>> getUserFavorites(@RequestParam Long userId) {
         List<Favorite> favorites = favoriteService.getUserFavorites(userId);
         List<FavoriteDto.FavoriteDTO> favoriteDTOs = favorites.stream()
                 .map(FavoriteDto::mapEntityToFavoriteDTO)
@@ -74,8 +74,8 @@ public class FavoriteController {
     }
 
     /** 특정 카페의 즐겨찾기 목록 조회 **/
-    @GetMapping("/cafe/{cafeId}")
-    public ResponseEntity<List<FavoriteDto.FavoriteDTO>> getCafeFavorites(@PathVariable Long cafeId) {
+    @GetMapping("/cafe")
+    public ResponseEntity<List<FavoriteDto.FavoriteDTO>> getCafeFavorites(@RequestParam Long cafeId) {
         List<Favorite> favorites = favoriteService.getCafeFavorites(cafeId);
         List<FavoriteDto.FavoriteDTO> favoriteDTOs = favorites.stream()
                 .map(FavoriteDto::mapEntityToFavoriteDTO)
