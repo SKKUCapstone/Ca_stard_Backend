@@ -25,7 +25,7 @@ public class UserController {
     private final UserService userService;
 
     /** 모든 회원 조회 **/
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity<List<UserDto.UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         List<UserDto.UserDTO> userDTOs = users.stream()
