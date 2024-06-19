@@ -32,8 +32,8 @@ public class CafeController {
         return new ResponseEntity<>(cafeDTOS, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CafeDto.CafeDTO> getCafeById(@PathVariable Long id) {
+    @GetMapping
+    public ResponseEntity<CafeDto.CafeDTO> getCafeById(@RequestParam Long id) {
         return cafeService.getCafeById(id)
                 .map(cafe -> new ResponseEntity<>(CafeDto.mapEntityToCafeDTO(cafe), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -45,8 +45,8 @@ public class CafeController {
         return new ResponseEntity<>(savedCafe.getId(), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCafe(@PathVariable Long id) {
+    @DeleteMapping
+    public ResponseEntity<Void> deleteCafe(@RequestParam Long id) {
         cafeService.deleteCafe(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

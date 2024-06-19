@@ -36,8 +36,8 @@ public class UserController {
 
 
     /** userId로 특정 회원 조회, 유저 객체 자체를 리턴 **/
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserDto.UserDTO> getUserById(@PathVariable Long userId) {
+    @GetMapping
+    public ResponseEntity<UserDto.UserDTO> getUserById(@RequestParam Long userId) {
         return userService.getUserById(userId)
                 .map(user -> new ResponseEntity<>(UserDto.mapEntityToUserDTO(user), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -50,8 +50,8 @@ public class UserController {
 //    }
 
 
-    @DeleteMapping("/remove/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+    @DeleteMapping("/remove")
+    public ResponseEntity<Void> deleteUser(@RequestParam Long userId) {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
