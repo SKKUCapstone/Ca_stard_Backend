@@ -31,6 +31,33 @@ public class FavoriteDto {
         private Long userId;
         @NotNull
         private Long cafeId;
+
+        // DB에 저장되어 있지 않은 카페는 리뷰 작성 시 DB에 넣어주기 위한 정보들.
+        private String cafeName;
+        private String address;
+        private String phone;
+        private Double longitude;
+        private Double latitude;
+    }
+
+    /** FavoriteRequestDTO 를 이용해 새로운 카페 엔티티를 생성하는 함수 **/
+    public static Cafe mapFavoriteRequestDTOToEntity(FavoriteRequestDTO favoriteRequestDTO) {
+        Long id = favoriteRequestDTO.getCafeId();
+        String cafeName = favoriteRequestDTO.getCafeName();
+        String address = favoriteRequestDTO.getAddress();
+        String phone = favoriteRequestDTO.getPhone();
+        Double longitude = favoriteRequestDTO.getLongitude();
+        Double latitude = favoriteRequestDTO.getLatitude();
+
+        Cafe newCafe = new Cafe();
+        newCafe.setId(id);
+        newCafe.setCafeName(cafeName);
+        newCafe.setAddress(address);
+        newCafe.setPhone(phone);
+        newCafe.setLongitude(longitude);
+        newCafe.setLatitude(latitude);
+
+        return newCafe;
     }
 
     /** Favorite 엔티티를 FavoriteDTO 로 변환하는 함수 **/

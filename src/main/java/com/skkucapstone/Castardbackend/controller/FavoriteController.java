@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.skkucapstone.Castardbackend.dto.FavoriteDto.mapFavoriteRequestDTOToEntity;
+import static com.skkucapstone.Castardbackend.dto.ReviewDto.mapReviewCreateRequestDtoToEntity;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,13 +39,22 @@ public class FavoriteController {
 
         Map<String, String> response = new HashMap<>();
 
-        if (userService.getUserById(userId).isEmpty()){
-            response.put("message", "userID Not found");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        // 카페 확인 및 필요시 생성
+        Optional<Cafe> cafeById = cafeService.getCafeById(cafeId);
+        if (cafeById.isEmpty()){
+            Cafe newCafe = mapFavoriteRequestDTOToEntity(favoriteRequestDTO);
+            cafeService.saveCafe(newCafe);
+
+            // 새로 저장한 카페 객체를 다시 조회: 영속성 컨텍스트에서 관리되도록 하기
+            cafeById = cafeService.getCafeById(favoriteRequestDTO.getCafeId());
+            if (cafeById.isEmpty()) {
+                // 예상치 못한 오류로 새로 저장한 카페가 조회되지 않는 경우
+                return ResponseEntity.notFound().build();
+            }
         }
 
-        if (cafeService.getCafeById(cafeId).isEmpty()){
-            response.put("message", "cafeID Not found");
+        if (userService.getUserById(userId).isEmpty()){
+            response.put("message", "userID Not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
